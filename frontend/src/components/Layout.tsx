@@ -32,8 +32,7 @@ export default function Layout() {
         {/* Logo */}
         <div className="px-5 py-5 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="DM" className="h-8 w-auto"
-                 onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            <img src="/logo.png" alt="DM" className="h-8 w-auto object-contain" />
             <div>
               <p className="text-white font-display font-semibold text-sm leading-tight">Dias &amp; Menezes</p>
               <p className="text-white/40 text-xs">Advogados Associados</p>

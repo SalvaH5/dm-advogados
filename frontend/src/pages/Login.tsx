@@ -37,8 +37,7 @@ export default function Login() {
         <div className="px-8 py-10 flex flex-col items-center"
              style={{ background: 'linear-gradient(180deg, #111111 0%, #1A1A1A 100%)' }}>
           <div className="mb-4">
-            <img src="/logo.png" alt="Dias & Menezes" className="h-16 w-auto"
-                 onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            <img src="/logo.png" alt="Dias & Menezes" className="h-16 w-auto object-contain" />
           </div>
           <h1 className="font-display text-white text-2xl font-semibold tracking-wide">
             Dias &amp; Menezes
