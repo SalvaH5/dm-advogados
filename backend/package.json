@@ -5,7 +5,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "create-users": "tsx src/scripts/createUsers.ts"
+    "create-users": "tsx src/scripts/createUsers.ts",
+    "migrate:fase2a": "tsx src/scripts/runMigration.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.0",

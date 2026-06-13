@@ -10,6 +10,10 @@ import * as templatesCtrl from '../controllers/templatesController';
 import * as documentosCtrl from '../controllers/documentosController';
 import * as onboardingCtrl from '../controllers/onboardingController';
 import * as perfilVaraCtrl from '../controllers/perfilVaraController';
+import * as prazosCtrl from '../controllers/prazosController';
+import * as publicacoesCtrl from '../controllers/publicacoesController';
+import * as leadsCtrl from '../controllers/leadsController';
+import * as dashboardCtrl from '../controllers/dashboardController';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
@@ -18,6 +22,9 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 
 router.post('/auth/login',          authCtrl.login);
 router.get ('/auth/me',             authenticate, authCtrl.me);
 router.put ('/auth/senha',          authenticate, authCtrl.alterarSenha);
+
+// ── DASHBOARD ─────────────────────────────────────
+router.get ('/dashboard/stats',     authenticate, dashboardCtrl.stats);
 
 // ── CLIENTES ──────────────────────────────────────
 router.get ('/clientes',            authenticate, authorize('clientes','ler'),   clientesCtrl.listar);
@@ -47,13 +54,37 @@ router.get ('/documentos/:id/url',  authenticate, authorize('documentos','ler'),
 router.put ('/documentos/:id/portal', authenticate, authorize('documentos','editar'), documentosCtrl.togglePortal);
 
 // ── ONBOARDING ────────────────────────────────────
-router.post('/onboarding/iniciar',       authenticate, onboardingCtrl.iniciar);
-router.post('/onboarding/assinar',       authenticate, onboardingCtrl.enviarParaAssinatura);
-router.post('/onboarding/webhook/zapsign', onboardingCtrl.webhookZapSign);
+router.post('/onboarding/iniciar',          authenticate, onboardingCtrl.iniciar);
+router.post('/onboarding/assinar',          authenticate, onboardingCtrl.enviarParaAssinatura);
+router.post('/onboarding/webhook/zapsign',  onboardingCtrl.webhookZapSign);
 
 // ── PERFIS DE VARAS ───────────────────────────────
 router.get ('/varas',               authenticate, perfilVaraCtrl.listar);
 router.post('/varas',               authenticate, auditar('create','perfis_vara'), perfilVaraCtrl.criar);
 router.put ('/varas/:id',           authenticate, auditar('update','perfis_vara'), perfilVaraCtrl.atualizar);
+
+// ── PRAZOS ────────────────────────────────────────
+router.get ('/prazos/vencendo-hoje',    authenticate, prazosCtrl.vencendoHoje);
+router.post('/prazos/calcular',         authenticate, prazosCtrl.calcular);
+router.get ('/prazos',                  authenticate, prazosCtrl.listar);
+router.post('/prazos',                  authenticate, auditar('create','prazos'), prazosCtrl.criar);
+router.put ('/prazos/:id/concluir',     authenticate, auditar('update','prazos'), prazosCtrl.concluir);
+
+// ── PUBLICAÇÕES ───────────────────────────────────
+router.get ('/publicacoes/nao-lidas',   authenticate, publicacoesCtrl.naoLidas);
+router.get ('/publicacoes',             authenticate, publicacoesCtrl.listar);
+router.post('/publicacoes',             authenticate, auditar('create','publicacoes'), publicacoesCtrl.criar);
+router.put ('/publicacoes/:id/lida',    authenticate, publicacoesCtrl.marcarLida);
+
+// ── LEADS ─────────────────────────────────────────
+router.get ('/leads/kanban',                authenticate, leadsCtrl.kanban);
+router.get ('/leads',                       authenticate, leadsCtrl.listar);
+router.post('/leads',                       authenticate, auditar('create','leads'), leadsCtrl.criar);
+router.put ('/leads/:id/status',            authenticate, auditar('update','leads'), leadsCtrl.atualizarStatus);
+router.post('/leads/:id/interacoes',        authenticate, leadsCtrl.adicionarInteracao);
+router.post('/leads/:id/converter',         authenticate, auditar('update','leads'), leadsCtrl.converterEmCliente);
+
+// ── LEADS — ROTA PÚBLICA ──────────────────────────
+router.post('/publico/leads',               leadsCtrl.criarPublico);
 
 export default router;

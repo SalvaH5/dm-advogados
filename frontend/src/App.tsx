@@ -4,6 +4,10 @@ import { useAuthStore } from './store/authStore';
 import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Clientes from './pages/Clientes';
+import Leads from './pages/Leads';
+import Prazos from './pages/Prazos';
+import NovoCliente from './pages/NovoCliente';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 1000 * 60 * 5 } }
@@ -27,12 +31,16 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/novo-cliente" element={<NovoCliente />} />
           <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Dashboard />} />
-            <Route path="clientes"    element={<Placeholder title="Clientes" />} />
+            <Route path="clientes"    element={<Clientes />} />
             <Route path="processos"   element={<Placeholder title="Processos" />} />
             <Route path="templates"   element={<Placeholder title="Templates" />} />
             <Route path="documentos"  element={<Placeholder title="Documentos" />} />
+            <Route path="prazos"      element={<Prazos />} />
+            <Route path="leads"       element={<Leads />} />
+            <Route path="publicacoes" element={<Placeholder title="Publicações" />} />
           </Route>
         </Routes>
       </BrowserRouter>

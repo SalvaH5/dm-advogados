@@ -1,13 +1,16 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { Users, Scale, FileText, FolderOpen, LogOut, LayoutDashboard } from 'lucide-react';
+import { Users, Scale, FileText, FolderOpen, LogOut, LayoutDashboard, Clock, Bell, TrendingUp } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
 const navItems = [
-  { to: '/',           icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/clientes',   icon: Users,           label: 'Clientes' },
-  { to: '/processos',  icon: Scale,           label: 'Processos' },
-  { to: '/templates',  icon: FileText,        label: 'Templates' },
-  { to: '/documentos', icon: FolderOpen,      label: 'Documentos' },
+  { to: '/',            icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/clientes',    icon: Users,           label: 'Clientes' },
+  { to: '/processos',   icon: Scale,           label: 'Processos' },
+  { to: '/prazos',      icon: Clock,           label: 'Prazos' },
+  { to: '/publicacoes', icon: Bell,            label: 'Publicações' },
+  { to: '/leads',       icon: TrendingUp,      label: 'Leads' },
+  { to: '/templates',   icon: FileText,        label: 'Templates' },
+  { to: '/documentos',  icon: FolderOpen,      label: 'Documentos' },
 ];
 
 function getInitials(nome: string) {
@@ -43,7 +46,7 @@ export default function Layout() {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5">
+        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
           {navItems.map(({ to, icon: Icon, label }) => (
             <NavLink
               key={to} to={to} end={to === '/'}
