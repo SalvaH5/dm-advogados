@@ -1,14 +1,18 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { Scale, Users, FileText, FolderOpen, LogOut, LayoutDashboard } from 'lucide-react';
+import { Users, Scale, FileText, FolderOpen, LogOut, LayoutDashboard } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
 const navItems = [
-  { to: '/',          icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/clientes',  icon: Users,           label: 'Clientes' },
-  { to: '/processos', icon: Scale,           label: 'Processos' },
-  { to: '/templates', icon: FileText,        label: 'Templates' },
-  { to: '/documentos',icon: FolderOpen,      label: 'Documentos' },
+  { to: '/',           icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/clientes',   icon: Users,           label: 'Clientes' },
+  { to: '/processos',  icon: Scale,           label: 'Processos' },
+  { to: '/templates',  icon: FileText,        label: 'Templates' },
+  { to: '/documentos', icon: FolderOpen,      label: 'Documentos' },
 ];
+
+function getInitials(nome: string) {
+  return nome.split(' ').slice(0, 2).map(n => n[0]).join('').toUpperCase();
+}
 
 export default function Layout() {
   const { user, logout } = useAuthStore();
@@ -21,48 +25,66 @@ export default function Layout() {
 
   return (
     <div className="flex h-screen bg-gray-50">
-      <aside className="w-60 bg-primary-600 flex flex-col">
-        <div className="p-5 border-b border-primary-700">
-          <div className="flex items-center gap-2">
-            <Scale size={22} className="text-white" />
-            <span className="text-white font-bold text-sm">DM Advogados</span>
+      {/* Sidebar */}
+      <aside className="w-56 flex flex-col border-r border-white/10"
+             style={{ background: 'linear-gradient(180deg, #111111 0%, #1A1A1A 100%)' }}>
+
+        {/* Logo */}
+        <div className="px-5 py-5 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="DM" className="h-8 w-auto"
+                 onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+            <div>
+              <p className="text-white font-display font-semibold text-sm leading-tight">Dias &amp; Menezes</p>
+              <p className="text-white/40 text-xs">Advogados Associados</p>
+            </div>
           </div>
         </div>
 
-        <nav className="flex-1 p-3 space-y-1">
+        {/* Nav */}
+        <nav className="flex-1 px-3 py-4 space-y-0.5">
           {navItems.map(({ to, icon: Icon, label }) => (
             <NavLink
               key={to} to={to} end={to === '/'}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all ${
                   isActive
-                    ? 'bg-white/20 text-white font-medium'
-                    : 'text-white/70 hover:bg-white/10 hover:text-white'
+                    ? 'bg-white/15 text-white font-medium'
+                    : 'text-white/50 hover:bg-white/10 hover:text-white/80'
                 }`
               }
             >
-              <Icon size={18} />
+              <Icon size={17} strokeWidth={1.8} />
               {label}
             </NavLink>
           ))}
         </nav>
 
-        <div className="p-3 border-t border-primary-700">
-          <div className="px-3 py-2 mb-1">
-            <p className="text-white text-sm font-medium truncate">{user?.nome}</p>
-            <p className="text-white/50 text-xs capitalize">{user?.role}</p>
+        {/* User */}
+        <div className="px-3 py-3 border-t border-white/10">
+          <div className="flex items-center gap-3 px-3 py-2 mb-1">
+            <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
+              <span className="text-white text-xs font-semibold">
+                {user?.nome ? getInitials(user.nome) : 'U'}
+              </span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-white text-xs font-medium truncate">{user?.nome}</p>
+              <p className="text-white/40 text-xs capitalize">{user?.role}</p>
+            </div>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 w-full px-3 py-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg text-sm transition-colors"
+            className="flex items-center gap-2 w-full px-3 py-2 text-white/40 hover:text-white/70 hover:bg-white/10 rounded-lg text-xs transition-all"
           >
-            <LogOut size={16} />
+            <LogOut size={14} />
             Sair
           </button>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-auto">
+      {/* Main */}
+      <main className="flex-1 overflow-auto bg-gray-50">
         <Outlet />
       </main>
     </div>

@@ -220,20 +220,6 @@ CREATE INDEX IF NOT EXISTS idx_portal_tokens_hash ON portal_tokens(token_hash);
 -- ─────────────────────────────────────────
 -- DADOS INICIAIS
 -- ─────────────────────────────────────────
--- Usuário admin padrão (senha: DmAdmin2025! — trocar no primeiro acesso)
-INSERT INTO users (nome, email, senha_hash, role, permissoes)
-VALUES (
-  'Administrador',
-  'admin@diasmenezes.adv.br',
-  '$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TiGAtXFpS1qO0gTcq/cK7W3jqOlS',
-  'admin',
-  '{
-    "clientes": {"ler": true, "criar": true, "editar": true, "deletar": true},
-    "processos": {"ler": true, "criar": true, "editar": true, "deletar": true},
-    "documentos": {"ler": true, "criar": true, "editar": true, "deletar": true},
-    "templates": {"ler": true, "criar": true, "editar": true, "deletar": true},
-    "financeiro": {"ler": true, "criar": true, "editar": true},
-    "usuarios": {"ler": true, "criar": true, "editar": true},
-    "auditoria": {"ler": true}
-  }'::jsonb
-) ON CONFLICT (email) DO NOTHING;
+-- NOTA: Usuários são criados via script:
+-- cd backend && npm run create-users
+-- Não inserir usuários diretamente neste arquivo (problemas com hash bcrypt no shell)
