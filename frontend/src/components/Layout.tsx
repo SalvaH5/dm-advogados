@@ -1,14 +1,18 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { Users, Scale, FileText, FolderOpen, LogOut, LayoutDashboard, Clock, Bell, TrendingUp } from 'lucide-react';
+import { Users, Scale, FileText, FolderOpen, LogOut, LayoutDashboard,
+         Clock, Bell, TrendingUp, CheckSquare, CalendarDays, Sun, Moon } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useThemeStore } from '../store/themeStore';
 
 const navItems = [
   { to: '/',            icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/clientes',    icon: Users,           label: 'Clientes' },
   { to: '/processos',   icon: Scale,           label: 'Processos' },
-  { to: '/prazos',      icon: Clock,           label: 'Prazos' },
-  { to: '/publicacoes', icon: Bell,            label: 'Publicações' },
   { to: '/leads',       icon: TrendingUp,      label: 'Leads' },
+  { to: '/agenda',      icon: CalendarDays,    label: 'Agenda' },
+  { to: '/prazos',      icon: Clock,           label: 'Prazos' },
+  { to: '/tarefas',     icon: CheckSquare,     label: 'Tarefas' },
+  { to: '/publicacoes', icon: Bell,            label: 'Publicações' },
   { to: '/templates',   icon: FileText,        label: 'Templates' },
   { to: '/documentos',  icon: FolderOpen,      label: 'Documentos' },
 ];
@@ -19,6 +23,7 @@ function getInitials(nome: string) {
 
 export default function Layout() {
   const { user, logout } = useAuthStore();
+  const { tema, toggleTema } = useThemeStore();
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -29,7 +34,7 @@ export default function Layout() {
   return (
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-56 flex flex-col border-r border-white/10"
+      <aside className="w-56 flex flex-col border-r border-white/10 flex-shrink-0"
              style={{ background: 'linear-gradient(180deg, #111111 0%, #1A1A1A 100%)' }}>
 
         {/* Logo */}
@@ -77,10 +82,13 @@ export default function Layout() {
               <p className="text-white/40 text-xs capitalize">{user?.role}</p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-2 w-full px-3 py-2 text-white/40 hover:text-white/70 hover:bg-white/10 rounded-lg text-xs transition-all"
-          >
+          <button onClick={toggleTema}
+            className="flex items-center gap-2 w-full px-3 py-2 text-white/40 hover:text-white/70 hover:bg-white/10 rounded-lg text-xs transition-all mb-0.5">
+            {tema === 'claro' ? <Moon size={14} /> : <Sun size={14} />}
+            {tema === 'claro' ? 'Tema Escuro' : 'Tema Claro'}
+          </button>
+          <button onClick={handleLogout}
+            className="flex items-center gap-2 w-full px-3 py-2 text-white/40 hover:text-white/70 hover:bg-white/10 rounded-lg text-xs transition-all">
             <LogOut size={14} />
             Sair
           </button>

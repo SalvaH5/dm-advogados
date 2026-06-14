@@ -45,3 +45,30 @@ export const leadsService = {
 export const dashboardService = {
   stats: () => api.get('/dashboard/stats'),
 };
+
+export const tarefasService = {
+  listar: (params?: Record<string, unknown>) => api.get('/tarefas', { params }),
+  kanban: (params?: Record<string, unknown>) => api.get('/tarefas/kanban', { params }),
+  criar: (data: Record<string, unknown>) => api.post('/tarefas', data),
+  atualizar: (id: string, data: Record<string, unknown>) => api.put(`/tarefas/${id}`, data),
+  atualizarStatus: (id: string, status: string) => api.put(`/tarefas/${id}/status`, { status }),
+};
+
+export const agendaService = {
+  listar: (params?: Record<string, unknown>) => api.get('/agenda', { params }),
+  proximos: () => api.get('/agenda/proximos'),
+  criar: (data: Record<string, unknown>) => api.post('/agenda', data),
+  atualizar: (id: string, data: Record<string, unknown>) => api.put(`/agenda/${id}`, data),
+  deletar: (id: string) => api.delete(`/agenda/${id}`),
+};
+
+export const chatService = {
+  listarPorProcesso: (processoId: string) => api.get(`/chat/processo/${processoId}`),
+  enviar: (data: Record<string, unknown>) => api.post('/chat', data),
+};
+
+export const historicoService = {
+  porCliente: (clienteId: string) => api.get(`/historico/cliente/${clienteId}`),
+  porProcesso: (processoId: string) => api.get(`/historico/processo/${processoId}`),
+  registrar: (data: Record<string, unknown>) => api.post('/historico', data),
+};

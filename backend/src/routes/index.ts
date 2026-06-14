@@ -14,6 +14,10 @@ import * as prazosCtrl from '../controllers/prazosController';
 import * as publicacoesCtrl from '../controllers/publicacoesController';
 import * as leadsCtrl from '../controllers/leadsController';
 import * as dashboardCtrl from '../controllers/dashboardController';
+import * as tarefasCtrl from '../controllers/tarefasController';
+import * as agendaCtrl from '../controllers/agendaController';
+import * as chatCtrl from '../controllers/chatController';
+import * as historicoCtrl from '../controllers/historicoController';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
@@ -86,5 +90,28 @@ router.post('/leads/:id/converter',         authenticate, auditar('update','lead
 
 // ── LEADS — ROTA PÚBLICA ──────────────────────────
 router.post('/publico/leads',               leadsCtrl.criarPublico);
+
+// ── TAREFAS ───────────────────────────────────────
+router.get ('/tarefas/kanban',           authenticate, tarefasCtrl.kanban);
+router.get ('/tarefas',                  authenticate, tarefasCtrl.listar);
+router.post('/tarefas',                  authenticate, auditar('create','tarefas'), tarefasCtrl.criar);
+router.put ('/tarefas/:id',              authenticate, auditar('update','tarefas'), tarefasCtrl.atualizar);
+router.put ('/tarefas/:id/status',       authenticate, tarefasCtrl.atualizarStatus);
+
+// ── AGENDA ────────────────────────────────────────
+router.get ('/agenda/proximos',          authenticate, agendaCtrl.proximos);
+router.get ('/agenda',                   authenticate, agendaCtrl.listar);
+router.post('/agenda',                   authenticate, auditar('create','agenda_eventos'), agendaCtrl.criar);
+router.put ('/agenda/:id',               authenticate, agendaCtrl.atualizar);
+router.delete('/agenda/:id',             authenticate, agendaCtrl.deletar);
+
+// ── CHAT ──────────────────────────────────────────
+router.get ('/chat/processo/:processo_id', authenticate, chatCtrl.listarPorProcesso);
+router.post('/chat',                       authenticate, chatCtrl.enviar);
+
+// ── HISTÓRICO ─────────────────────────────────────
+router.get ('/historico/cliente/:cliente_id',   authenticate, historicoCtrl.listarPorCliente);
+router.get ('/historico/processo/:processo_id', authenticate, historicoCtrl.listarPorProcesso);
+router.post('/historico',                        authenticate, historicoCtrl.registrar);
 
 export default router;

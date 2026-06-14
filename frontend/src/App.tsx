@@ -5,8 +5,13 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Clientes from './pages/Clientes';
+import ClienteDetalhe from './pages/ClienteDetalhe';
+import Processos from './pages/Processos';
+import ProcessoDetalhe from './pages/ProcessoDetalhe';
 import Leads from './pages/Leads';
 import Prazos from './pages/Prazos';
+import Tarefas from './pages/Tarefas';
+import Agenda from './pages/Agenda';
 import NovoCliente from './pages/NovoCliente';
 
 const queryClient = new QueryClient({
@@ -18,10 +23,10 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" replace />;
 }
 
-const Placeholder = ({ title }: { title: string }) => (
-  <div className="p-6">
-    <h1 className="text-xl font-bold text-primary-600">{title}</h1>
-    <p className="text-gray-500 mt-2">Módulo em implementação</p>
+const Em = ({ titulo }: { titulo: string }) => (
+  <div className="p-8">
+    <h1 className="font-display text-2xl font-semibold text-primary-800">{titulo}</h1>
+    <p className="text-gray-400 text-sm mt-2">Em implementação na Fase 3</p>
   </div>
 );
 
@@ -34,13 +39,17 @@ export default function App() {
           <Route path="/novo-cliente" element={<NovoCliente />} />
           <Route path="/" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Dashboard />} />
-            <Route path="clientes"    element={<Clientes />} />
-            <Route path="processos"   element={<Placeholder title="Processos" />} />
-            <Route path="templates"   element={<Placeholder title="Templates" />} />
-            <Route path="documentos"  element={<Placeholder title="Documentos" />} />
-            <Route path="prazos"      element={<Prazos />} />
-            <Route path="leads"       element={<Leads />} />
-            <Route path="publicacoes" element={<Placeholder title="Publicações" />} />
+            <Route path="clientes"      element={<Clientes />} />
+            <Route path="clientes/:id"  element={<ClienteDetalhe />} />
+            <Route path="processos"     element={<Processos />} />
+            <Route path="processos/:id" element={<ProcessoDetalhe />} />
+            <Route path="leads"         element={<Leads />} />
+            <Route path="prazos"        element={<Prazos />} />
+            <Route path="tarefas"       element={<Tarefas />} />
+            <Route path="agenda"        element={<Agenda />} />
+            <Route path="publicacoes"   element={<Em titulo="Publicações" />} />
+            <Route path="templates"     element={<Em titulo="Templates" />} />
+            <Route path="documentos"    element={<Em titulo="Documentos" />} />
           </Route>
         </Routes>
       </BrowserRouter>
